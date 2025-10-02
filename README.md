@@ -4,7 +4,7 @@
 
 This repository contains the baseline system for the CHiME-9 challenge, Task 2 ECHI.
 
-> **Quick start?** See: [Getting Started](#getting-started)
+> **Quick start?** To get started with the data, [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/CHiME9-ECHI/CHiME9-ECHI/blob/main/Quickstart.ipynb), or jump to [Getting Started](#getting-started) to begin using this repo.
 
 For detailed information on how to participate in the challenge and for obtaining the datasets, please refer to the [challenge website](https://www.chimechallenge.org/current/task2/index)
 
@@ -62,6 +62,31 @@ git clone git@github.com:CHiME9-ECHI/CHiME9-ECHI.git
 cd CHiME9-ECHI
 ```
 
+### Option A: Using UV (Recommended - Faster)
+
+If you have [UV](https://docs.astral.sh/uv/) installed, use the simplified installation:
+
+```bash
+# Install UV if you haven't already
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Run the UV installation script
+./install_uv.sh
+```
+
+This will:
+- Create a virtual environment in `.venv`
+- Install all dependencies from `pyproject.toml`
+- Set up PYTHONPATH automatically
+
+When running the system, remember to activate the virtual environment:
+
+```bash
+source .venv/bin/activate
+export PYTHONPATH="$PWD/src:$PYTHONPATH"
+```
+
+### Option B: Using Conda (Legacy)
 The installation of the necessary tools is detailed in `install.sh`.
 We recommend following it step-by-step and adjusting for your system if needed.
 The script will build a conda environment called `echi_recipe` and install the
@@ -106,15 +131,38 @@ wget --header="Authorization: Bearer $HF_TOKEN" https://huggingface.co/datasets/
 tar -zxovf chime9_echi.dev.v1_0.tar.gz
 ```
 
-The baseline system expects the dataset to be placed in the `data/chime9_echi`
- directory by default. The paths to various subsets of the data (e.g., training,
- development, evaluation) are defined in the `config/paths.yaml` file. If you
- choose to place the data in a different location, you will need to update
- `config/paths.yaml` accordingly. However, adhering to the default directory
- structure (`data/chime9_echi`) is recommended for ease of use.
+### Configuring Data Paths
 
-Note that `data/chime9_echi` can also be a symbolic link to another location,
-allowing flexibility in where the dataset is physically stored.
+The paths to various subsets of the data (e.g., training, development, evaluation)
+are defined in the `config/paths.yaml` file.
+
+**Important:** Update the `echi_dir` path in `config/paths.yaml` to point to your dataset location:
+
+```yaml
+# config/paths.yaml
+echi_dir: /Volumes/SSD/Datasets/CHiME 9  # Update this to your path
+```
+
+The baseline system expects the dataset structure:
+```
+your_dataset_path/
+├── ha/
+│   ├── dev/
+│   └── train/
+├── aria/
+│   ├── dev/
+│   └── train/
+├── ref/
+├── participant/
+└── metadata/
+```
+
+Note that `echi_dir` can point to any location - you don't need to place data
+in the repository. You can also use a symbolic link:
+
+```bash
+ln -s /Volumes/SSD/Datasets/CHiME\ 9 data/chime9_echi
+```
 
 ## <a id="stages">3. Stages</a>
 
