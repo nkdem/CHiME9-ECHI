@@ -34,8 +34,15 @@ def get_device():
 POSITIONS = ["pos1", "pos2", "pos3", "pos4"]
 
 
-def get_session_tuples(session_file, devices, datasets):
-    """Get session tuples for the specified datasets and devices."""
+def get_session_tuples(session_file, devices, datasets, max_sessions=None):
+    """Get session tuples for the specified datasets and devices.
+
+    Args:
+        session_file: Path template for session files
+        devices: Device type(s) to process
+        datasets: Dataset split(s) to process
+        max_sessions: Optional limit on number of sessions PER DATASET (for testing)
+    """
     if isinstance(datasets, str):
         datasets = [datasets]
     if isinstance(devices, str):
@@ -45,7 +52,18 @@ def get_session_tuples(session_file, devices, datasets):
 
     for ds in datasets:
         with open(session_file.format(dataset=ds), "r") as f:
-            sessions += list(csv.DictReader(f))
+            ds_sessions = list(csv.DictReader(f))
+
+        # Limit sessions PER DATASET if max_sessions is specified
+        if max_sessions is not None:
+            ds_sessions = ds_sessions[:max_sessions]
+            logging.info(f"Limiting {ds} to {len(ds_sessions)} sessions (max_sessions={max_sessions})")
+
+        sessions += ds_sessions
+
+    # Keep the total logging for reference
+    if max_sessions is not None:
+        logging.info(f"Total sessions across all datasets: {len(sessions)}")
 
     session_device_pid_tuples = []
 

@@ -3,8 +3,13 @@ import hydra
 from omegaconf import DictConfig
 from tqdm import tqdm
 import logging
+import warnings
 from torch_stoi import NegSTOILoss
 from torch.utils.data.dataloader import DataLoader
+
+# Suppress annoying warnings
+warnings.filterwarnings("ignore", category=UserWarning, message=".*torchaudio.*")
+warnings.filterwarnings("ignore", category=UserWarning, message=".*pin_memory.*")
 
 from train.echi import ECHI, collate_fn
 from shared.core_utils import get_model, get_device

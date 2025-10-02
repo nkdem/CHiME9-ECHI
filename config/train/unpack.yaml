@@ -13,3 +13,7 @@ ref_output_dir: ${..paths.train_target_dir}
 dataset: [train, dev]
 devices: ${..device}
 sessions_file: ${..paths.sessions_file}
+
+# Optional: Limit number of sessions for testing (null = process all)
+# Example: Set to 2 to process only first 2 sessions (~5% of data)
+max_sessions: null

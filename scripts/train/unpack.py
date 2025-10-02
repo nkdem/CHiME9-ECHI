@@ -12,8 +12,12 @@ from train.signal_prep import segment_all_signals, resample_rainbow
 def unpack(cfg):
     logging.info("Preparing the ECHI dataset")
 
+    max_sessions = cfg.get("max_sessions", None)
+    if max_sessions is not None:
+        logging.info(f"⚠️  TESTING MODE: Only processing {max_sessions} sessions")
+
     session_tuples = get_session_tuples(
-        cfg.sessions_file, cfg.devices, datasets=cfg.dataset
+        cfg.sessions_file, cfg.devices, datasets=cfg.dataset, max_sessions=max_sessions
     )
 
     resample_rainbow(

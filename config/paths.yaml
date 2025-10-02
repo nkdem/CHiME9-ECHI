@@ -4,7 +4,7 @@ root_dir: data/working_dir
 # Path to the ECHI dataset directory
 # NOTE: This should point to your downloaded CHiME-9 ECHI dataset
 # Update this path to match your system
-echi_dir: /Volumes/SSD/Datasets/CHiME 9
+echi_dir: /Volumes/SSD/Datasets/CHiME9/chime9_echi
 
 # Directories to store experiment outputs
 exp_dir: ${paths.root_dir}/experiments/${..shared.exp_name}
