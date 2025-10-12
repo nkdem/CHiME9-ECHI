@@ -3,7 +3,7 @@
 #SBATCH --partition=PGR-Standard
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=32G
+#SBATCH --mem=20G
 #SBATCH --time=4:00:00
 #SBATCH --output=slurm/logs/unpack/%j_unpack_ha.out
 #SBATCH --mail-user=s2203859@ed.ac.uk
@@ -33,6 +33,9 @@ USER="s2203859"
 SOURCE_DATA="$HOME/chime9_echi"
 SCRATCH_DIR="/disk/scratch/${USER}/CHiME9-ECHI"
 PROCESSED_DIR="${SCRATCH_DIR}/processed"
+
+mkdir -p $SCRATCH_DIR
+mkdir -p $PROCESSED_DIR
 
 # Step 1: Copy raw data to scratch (if not already there)
 if [ ! -d "$SCRATCH_DIR/chime9_echi" ]; then

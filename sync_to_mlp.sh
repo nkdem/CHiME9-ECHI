@@ -21,6 +21,8 @@ echo "Excluding patterns from .gitignore..."
 rsync -avzP \
   --delete \
   --exclude='.git/' \
+  --exclude='data/' \
+  --exclude='.venv/' \
   --filter=':- .gitignore' \
   ./ mlp:"$REMOTE_PATH"
 

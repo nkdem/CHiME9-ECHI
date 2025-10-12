@@ -1,17 +1,17 @@
 #!/bin/bash
-#SBATCH --job-name=train_ha_subset
+#SBATCH --job-name=train_ha_test
 #SBATCH --partition=PGR-Standard
 #SBATCH --nodes=1
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
-#SBATCH --time=48:00:00
-#SBATCH --output=slurm/logs/train/%j_train_ha.out
+#SBATCH --time=03:00:00
+#SBATCH --output=slurm/logs/train/%j_train_ha_test.out
 #SBATCH --mail-user=s2203859@ed.ac.uk
 #SBATCH --mail-type=END,FAIL
 
 echo "=========================================="
-echo "CHiME9 ECHI - Training HA Baseline (Subset)"
+echo "CHiME9 ECHI - Training HA TEST (Quick validation)"
 echo "=========================================="
 echo "Job ID: $SLURM_JOB_ID"
 echo "Node: $SLURMD_NODENAME"
@@ -104,22 +104,30 @@ echo ""
 
 # Create unique experiment name with timestamp
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-EXP_NAME="ha_subset_${TIMESTAMP}"
+EXP_NAME="ha_test_${TIMESTAMP}"
 
-echo "Experiment name: ${EXP_NAME}"
+# Run training with TEST parameters
+echo "=========================================="
+echo "RUNNING IN TEST MODE:"
+echo "  - 3 epochs (instead of 50)"
+echo "  - Debug mode enabled (progress bars)"
+echo "  - Checkpoint every epoch"
+echo "  - Experiment name: ${EXP_NAME}"
+echo "=========================================="
 echo ""
-
-# Run training
-echo "Starting training..."
+echo "Starting test training..."
 python scripts/train/train_script.py \
     device=ha \
     paths.root_dir=${PROCESSED_DIR} \
     paths.echi_dir=${SCRATCH_DIR}/chime9_echi \
-    shared.exp_name=${EXP_NAME}
+    shared.exp_name=${EXP_NAME} \
+    train.epochs=3 \
+    debug=true \
+    train.checkpoint_interval=1
 
 echo ""
 echo "=========================================="
-echo "Training completed: $(date)"
+echo "Test training completed: $(date)"
 echo "=========================================="
 
 # Copy all outputs from scratch back to home (except audio files)

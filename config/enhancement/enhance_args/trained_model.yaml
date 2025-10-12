@@ -1,0 +1,11 @@
+name: baseline
+
+args:
+  inference_dir: ${enhancement_dir}
+  # Point to your trained model checkpoint
+  # Update the path to your specific checkpoint epoch
+  config_path: checkpoints/${device}_config.yaml
+  ckpt_path: ${paths.root_dir}/experiments/${shared.exp_name}/train_${device}/checkpoints/epoch049.pt
+  audio_device: ${device}
+  window_size: 60
+  stride: 56
